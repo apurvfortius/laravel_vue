@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'users' => 'API\UserController',
         'roles' => 'API\RoleController',
         'permissions' => 'API\PermissionController',
+        'business' => 'API\BusinessController',
     ]);
 
     Route::get('getroles', 'API\UserController@getRoles');

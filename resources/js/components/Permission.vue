@@ -17,6 +17,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
+                                    <th>Role</th>
                                     <th>Created Date</th>
                                     <th>Modify</th>
                                 </tr>
@@ -25,6 +26,7 @@
                                 <tr v-for="permi in permissions.data" :key="permi.id">
                                     <td>{{ permi.id }}</td>
                                     <td>{{ permi.name | upText }}</td>
+                                    <td>{{ permi.count }}</td>
                                     <td>{{ permi.created_at | myDate }}</td>
                                     <td>
                                         <a href="#" @click="editModal(permi)"><i class="fa fa-edit blue"></i> </a> / 
@@ -66,8 +68,16 @@
                                 <input v-model="form.name" type="text" name="name" id="name" class="form-control" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
                                 <has-error :form="form" field="name"></has-error>
                             </div>
+
+                            <div class="form-group">
+                                <label>Select</label>
+                                <ul class="checkbox_list"> 
+                                    <li v-for="role in roles" :key="role.id">
+                                        <input type="checkbox" :value="role.name" v-model="form.role">{{ role.name }}
+                                    </li>
+                                </ul>                                
+                            </div>
                         </div>
-                    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button v-show="editMode" type="submit" class="btn btn-success">Update</button>
@@ -90,16 +100,19 @@ export default {
                 form: new Form({
                     id: '',
                     name : '',
+                    role : [],
                 })
             }
         },
         methods: {
             newModal() {
+                this.getRole();
                 this.editMode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
             editModal(user) {
+                this.getRole();
                 this.editMode = true;
                 this.form.reset();
                 $('#addNew').modal('show');

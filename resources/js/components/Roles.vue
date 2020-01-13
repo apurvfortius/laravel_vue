@@ -17,6 +17,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
+                                    <th>Permission</th>
                                     <th>Created Date</th>
                                     <th>Modify</th>
                                 </tr>
@@ -25,6 +26,7 @@
                                 <tr v-for="role in roles.data" :key="role.id">
                                     <td>{{ role.id }}</td>
                                     <td>{{ role.name | upText }}</td>
+                                    <td>{{ role.count }}</td>
                                     <td>{{ role.created_at | myDate }}</td>
                                     <td>
                                         <a href="#" @click="editModal(role)"><i class="fa fa-edit blue"></i> </a> / 
@@ -66,6 +68,15 @@
                                 <input v-model="form.name" type="text" name="name" id="name" class="form-control" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
                                 <has-error :form="form" field="name"></has-error>
                             </div>
+
+                            <div class="form-group">
+                                <label>Select</label>
+                                <ul class="checkbox_list"> 
+                                    <li v-for="permi in permissions" :key="permi.id">
+                                        <input type="checkbox" :value="permi.name" v-model="form.permission">{{ permi.name }}
+                                    </li>
+                                </ul>                                
+                            </div>
                         </div>
                     
                         <div class="modal-footer">
@@ -89,6 +100,7 @@
                 form: new Form({
                     id: '',
                     name : '',
+                    permission : [],
                 })
             }
         },
@@ -103,6 +115,8 @@
                 this.getPermisision();
                 this.editMode = true;
                 this.form.reset();
+                this.selected = this.form.permission;
+
                 $('#addNew').modal('show');
                 this.form.fill(user);
             },

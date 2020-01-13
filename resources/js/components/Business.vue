@@ -4,37 +4,33 @@
             <div class="col-md-12" v-if="$can('view')">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Users</h3>
+                        <div class="card-title">Business</div>
 
                         <div class="card-tools">
                             <button class="btn btn-success" @click="newModal"> <i class="fa fa-user-plus fa-fw"></i> Add New </button> 
                         </div>
                     </div>
-                    <!-- /.card-header -->
+
                     <div class="card-body table-responsive p-0" >
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
+                                    <th>Description</th>
                                     <th>Created Date</th>
                                     <th>Modify</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users.data" :key="user.id">
-                                    <td>{{ user.id }}</td>
-                                    <td>{{ user.name }}</td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user.phone }}</td>
-                                    <!-- <td>{{ user.type | upText }}</td> -->
-                                    <td>{{ user.created_at | myDate }}</td>
+                                <tr v-for="row in businesses.data" :key="row.id">
+                                    <td>{{ row.id }}</td>
+                                    <td>{{ row.business_name | upText }}</td>
+                                    <td>{{ row.business_description }}</td>
+                                    <td>{{ row.created_at | myDate }}</td>
                                     <td>
-                                        <a href="#" @click="editModal(user)"><i class="fa fa-edit blue"></i> </a> / 
-                                        <a href="#" @click="deleteUser(user.id)"><i class="fa fa-trash red"></i> </a>
-                                        <!-- <a href="#"><i class="fa fa-eye blue"></i> </a> -->
+                                        <a href="#" @click="editModal(row)"><i class="fa fa-edit blue"></i> </a> / 
+                                        <a href="#" @click="deleteUser(row.id)"><i class="fa fa-trash red"></i> </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -42,7 +38,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                        <pagination :data="businesses" @pagination-change-page="getResults"></pagination>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -59,43 +55,24 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" v-show="!editMode" id="addNewTitle"> Add New</h5>
-                        <h5 class="modal-title" v-show="editMode" id="addNewTitle"> Update User's Info</h5>
+                        <h5 class="modal-title" v-show="editMode" id="addNewTitle"> Update</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     
-                    <form @submit.prevent="editMode ? updateUser() : createUser()">
+                    <form @submit.prevent="editMode ? updateData() : createNew()">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input v-model="form.name" type="text" name="name" id="name" class="form-control" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
-                                <has-error :form="form" field="name"></has-error>
-                            </div>
-                            
-                            <div class="form-group">
-                                <input v-model="form.email" type="email" name="email" id="email" class="form-control" placeholder="Email Address" :class="{ 'is-invalid': form.errors.has('email') }">
-                                <has-error :form="form" field="email"></has-error>
+                                <input v-model="form.business_name" type="text" name="business_name" id="business_name" class="form-control" placeholder="Name" :class="{ 'is-invalid': form.errors.has('business_name') }">
+                                <has-error :form="form" field="business_name"></has-error>
                             </div>
 
                             <div class="form-group">
-                                <input v-model="form.phone" type="text" name="phone" id="phone" class="form-control" placeholder="Phone Number" :class="{ 'is-invalid': form.errors.has('phone') }">
-                                <has-error :form="form" field="phone"></has-error>
-                            </div>
-
-                            <div class="form-group">
-                                <select v-model="form.type" name="type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-                                    <option value="">Select User Type</option>
-                                    <option v-for="role in roles" :key="role.id" :value="role.name">{{ role.name | upText }}</option>
-                                </select>
-                                <has-error :form="form" field="type"></has-error>
-                            </div>
-
-                            <div class="form-group">
-                                <input v-model="form.password" type="password" name="password" id="password" class="form-control" placeholder="Password" :class="{ 'is-invalid': form.errors.has('password') }">
-                                <has-error :form="form" field="password"></has-error>
+                                <textarea v-model="form.business_description" name="business_description" id="business_description" class="form-control" placeholder="Description" :class="{ 'is-invalid': form.errors.has('business_description') }"></textarea>
+                                <has-error :form="form" field="business_description"></has-error>
                             </div>
                         </div>
-                    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button v-show="editMode" type="submit" class="btn btn-success">Update</button>
@@ -107,63 +84,51 @@
         </div>
     </div>
 </template>
+
 <script>
-    export default {
+export default {
         data () {
             return {
                 editMode: false,
-                users : {},
-                roles: {},
+                businesses : {},
                 form: new Form({
                     id: '',
-                    name : '',
-                    email :'',
-                    phone: '',
-                    type: '',
-                    role: '',
-                    photo: '',
-                    password: ''
+                    business_name : '',
+                    business_description : '',
                 })
             }
         },
         methods: {
             newModal() {
-                this.getRoles();
                 this.editMode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
             editModal(user) {
-                this.getRoles();
                 this.editMode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(user);
             },
             getResults(page = 1){
-                axios.get("api/users?page="+page).then( responce => {
-                        this.users = responce.data;
-                    } ); 
+                axios.get("api/business?page="+page).then( responce => {
+                    this.businesses = responce.data;
+                }); 
             },
-            getUsers() {
+            getData() {
                 if(this.$can('view')){
-                    axios.get("api/users").then(({ data }) => (this.users = data)); 
+                    axios.get("api/business").then(({ data }) => (this.businesses = data)); 
                 }                            
             },
-            getRoles() {
-                if(this.$can('view')){
-                    axios.get("api/getroles").then(({ data }) => (this.roles = data)); 
-                }                            
-            },
-            createUser() {
+            createNew() {
                 this.$Progress.start();
-                this.form.post('api/users')
+                this.form.post('api/business')
                 .then( () => {
                     Fire.$emit('AfterDone');
                     $('#addNew').modal('hide');
                     toast.fire({
                         icon: 'success',
-                        title: 'User Created Successfully',
+                        title: 'Business Type Created Successfully',
                     });
                     this.$Progress.finish(); 
                 })
@@ -171,16 +136,16 @@
                     this.$Progress.finish();
                 })                
             },
-            updateUser() {
+            updateData() {
                 this.$Progress.start();
-                this.form.put('api/users/'+this.form.id)
+                this.form.put('api/business/'+this.form.id)
                 .then( () => {
                     //success
                     Fire.$emit('AfterDone');
                     $('#addNew').modal('hide');
                     toast.fire({
                         icon: 'success',
-                        title: 'User has been Updated Successfully',
+                        title: 'Business Type has been Updated Successfully',
                     });
                     this.$Progress.finish();
                 }).catch( () => {
@@ -200,10 +165,10 @@
                 }).then((result) => {
                     if(result.value){
                         //send request to delete
-                        this.form.delete('api/users/'+id).then(() => {
+                        this.form.delete('api/business/'+id).then(() => {
                             swal.fire(
                             'Deleted!',
-                            'User has been deleted.',
+                            'Permission has been deleted.',
                             'success'
                             )
                             Fire.$emit('AfterDone');
@@ -219,14 +184,14 @@
             }
         },
         created() {
-            this.getUsers();
-            Fire.$on('AfterDone', () => this.getUsers());
+            this.getData();
+            Fire.$on('AfterDone', () => this.getData());
 
             Fire.$on('searching', () => {
                 let keywo = this.$parent.search;
-                axios.get('api/finduser?key='+keywo)
+                axios.get('api/findbusiness?key='+keywo)
                 .then((data) => {
-                    this.users = data.data;
+                    this.businesses = data.data;
                 })
                 .catch(() => {
 

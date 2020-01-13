@@ -75,6 +75,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
 
           @role('superadmin')
+            <li class="nav-item">
+              <router-link to="/business" class="nav-link">
+                <i class="nav-icon fas fa-building"></i>
+                <p>Business</p>
+              </router-link>
+            </li>
+          @endrole
+
+          @role('superadmin')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
@@ -86,13 +95,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <router-link to="/roles" class="nav-link">
-                  <i class="fas fa-user nav-icon"></i>
+                  <i class="fas fa-shield-alt nav-icon"></i>
                   <p>Roles</p>
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/permissions" class="nav-link">
-                  <i class="fas fa-user nav-icon"></i>
+                  <i class="fas fa-user-secret nav-icon"></i>
                   <p>Permissons</p>
                 </router-link>
               </li>
@@ -108,7 +117,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
+              <i class="nav-icon fas fa-user-circle"></i>
               <p>Profile</p>
             </router-link>
           </li>

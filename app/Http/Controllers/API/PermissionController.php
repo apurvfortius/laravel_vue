@@ -17,7 +17,12 @@ class PermissionController extends Controller
     public function index()
     {
         if(auth('api')->user()->hasRole('superadmin')){
-            return Permission::paginate(10);
+            $permisions = Permission::paginate(10);
+            foreach($permisions as $key => $value){
+                $permisions[$key]['role'] = $value->getRoleNames();
+                $permisions[$key]['count'] = count($value->getRoleNames());
+            }
+            return $permisions;
         }
     }
 
@@ -33,7 +38,13 @@ class PermissionController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
+        //$permission->assignRole($role);
+
         $permission = Permission::create(['name' => $request->name]);
+        
+        foreach($request->role as $role){
+            $permission->assignRole($role);
+        }
         return $permission;
     }
 
@@ -62,7 +73,16 @@ class PermissionController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $permission->update($request->all());
+        foreach($permission->getRoleNames() as $role){
+            $permission->removeRole($role);
+        }       
+
+        $permission->update(['name' => $request->name]);
+
+        foreach($request->role as $role){
+            $permission->assignRole($role);
+        }
+
         return ['message' => 'Permission updated Successfully'];
     }
 

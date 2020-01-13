@@ -17,3 +17,21 @@ $fa-font-path: "../webfonts";
     background-color: #00b359;
     color: black !important;
 }
+
+ul.checkbox_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+ul.checkbox_list li {
+    /* float: left; */
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+ul.checkbox_list li input {
+    margin-right: 5px;
+    /* line-height: 31px; */
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -19,7 +19,8 @@ class RoleController extends Controller
         if(auth('api')->user()->hasRole('superadmin')){
             $roles = Role::paginate(10);
             foreach($roles as $key => $value){
-                $roles[$key]['checkPermi'] = $value->getAllPermissions();
+                $roles[$key]['permission'] = $value->getAllPermissions()->pluck('name');
+                $roles[$key]['count'] = count($value->getAllPermissions());
             }
             return $roles;
         }
@@ -40,6 +41,10 @@ class RoleController extends Controller
         $id = Role::create([
             'name' => $request->name,
         ]);
+
+        foreach($request->permission as $permisin){
+            $id->givePermissionTo($permisin);
+        }        
         return $id;
     }
 
@@ -80,7 +85,15 @@ class RoleController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $role->update($request->all());
+        foreach($role->getAllPermissions() as $permission){
+            $role->revokePermissionTo($permission);
+        } 
+
+        $role->update(['name' => $request->name]);
+
+        foreach($request->permission as $permisin){
+            $role->givePermissionTo($permisin);
+        } 
         return ['message' => 'Role updated Successfully'];
     }
 
