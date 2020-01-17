@@ -21,6 +21,18 @@ class BusinessController extends Controller
         }
     }
 
+    public function findBusiness(){
+        if( $search = \Request::get('key') ){
+            $user = Business::where(function($query) use ($search){
+                $query->where('business_name', 'LIKE', "%$search%");
+            })->paginate(10);
+        }
+        else{
+            $user = Business::paginate(10);
+        }
+        return $user;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -33,8 +45,6 @@ class BusinessController extends Controller
             'business_name' => 'required|string|max:255',
             'business_description' => 'required|string|max:255',
         ]);
-
-        //$permission->assignRole($role);
 
         $result = Business::create([
             'business_name' => $request->business_name, 
@@ -64,7 +74,15 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $business = Business::findOrfail($id);
+
+        $this->validate($request, [
+            'business_name' => 'required|string|max:255',
+            'business_description' => 'required|string|max:255',
+        ]);
+
+        $business->update($request->all());
+        return ['message' => 'User updated Successfully'];
     }
 
     /**
@@ -75,6 +93,10 @@ class BusinessController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(auth('api')->user()->hasRole('superadmin')){
+            $business = Business::findOrfail($id);
+            $business->delete();
+            return ['message' => 'Business Deleted Successfully'];
+        }
     }
 }

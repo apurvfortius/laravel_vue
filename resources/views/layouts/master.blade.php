@@ -75,15 +75,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
 
           @role('superadmin')
-            <li class="nav-item">
-              <router-link to="/business" class="nav-link">
-                <i class="nav-icon fas fa-building"></i>
-                <p>Business</p>
-              </router-link>
-            </li>
-          @endrole
+          <li class="nav-item">
+            <router-link to="/business" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>Business</p>
+            </router-link>
+          </li>
 
-          @role('superadmin')
+          <li class="nav-item">
+            <router-link to="/productype" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>Product Type</p>
+            </router-link>
+          </li>
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>

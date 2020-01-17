@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'roles' => 'API\RoleController',
         'permissions' => 'API\PermissionController',
         'business' => 'API\BusinessController',
+        'productype' => 'API\ProductTypeController',
     ]);
 
     Route::get('getroles', 'API\UserController@getRoles');
@@ -31,7 +32,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('finduser', 'API\UserController@findUser');
 
     Route::get('findrole', 'API\RoleController@findRole');
+    
     Route::get('getpermissions', 'API\PermissionController@getPermissions');
+    Route::get('findpermission', 'API\PermissionController@findPermission');
+
+    Route::get('findbusiness', 'API\BusinessController@findBusiness');
+
+    Route::get('getbusiness', 'API\ProductTypeController@getBusiness');
+    Route::get('findproductype', 'API\ProductTypeController@findProductType');
 });
 
 

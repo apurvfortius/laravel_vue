@@ -26,6 +26,18 @@ class PermissionController extends Controller
         }
     }
 
+    public function findPermission(){
+        if( $search = \Request::get('key') ){
+            $user = Permission::where(function($query) use ($search){
+                $query->where('name', 'LIKE', "%$search%");
+            })->paginate(10);
+        }
+        else{
+            $user = Permission::paginate(10);
+        }
+        return $user;
+    }
+
     /**
      * Store a newly created resource in storage.
      *

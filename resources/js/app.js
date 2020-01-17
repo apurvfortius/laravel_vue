@@ -39,7 +39,8 @@ let routes = [
     { path: '/developer', components: require('./components/Developer.vue') },
     { path: '/roles', components: require('./components/Roles.vue') },
     { path: '/permissions', components: require('./components/Permission.vue') },
-    { path: '/business', components: require('./components/Business.vue') }
+    { path: '/business', components: require('./components/Business.vue') },
+    { path: '/productype', components: require('./components/Product_type.vue') }
 ]
 
 const router = new VueRouter({
