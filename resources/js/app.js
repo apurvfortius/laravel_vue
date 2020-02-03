@@ -1,21 +1,25 @@
+
 require('./bootstrap');
 
 import Vue from 'vue';
 
 import { Form, HasError, AlertError } from 'vform';
-
-import swal from 'sweetalert2';
-window.swal = swal;
-import moment from 'moment';
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+
+import swal from 'sweetalert2';
+window.swal = swal;
+
+import moment from 'moment';
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 import VueRouter from 'vue-router';
 
 import VueProgressBar from 'vue-progressbar';
+
+import {routes} from './routes';
 
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
@@ -31,17 +35,6 @@ Vue.prototype.$can = function(value){
 Vue.prototype.$is = function(value){
     return Permissions.includes(value);
 }
-
-let routes = [
-    { path: '/dashboard', components: require('./components/Dashboard.vue') },
-    { path: '/profile', components: require('./components/Profile.vue') },
-    { path: '/users', components: require('./components/Users.vue') },
-    { path: '/developer', components: require('./components/Developer.vue') },
-    { path: '/roles', components: require('./components/Roles.vue') },
-    { path: '/permissions', components: require('./components/Permission.vue') },
-    { path: '/business', components: require('./components/Business.vue') },
-    { path: '/productype', components: require('./components/Product_type.vue') }
-]
 
 const router = new VueRouter({
     mode: 'history',
