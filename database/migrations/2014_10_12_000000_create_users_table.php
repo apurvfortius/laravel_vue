@@ -39,8 +39,8 @@ class CreateUsersTable extends Migration
             )
         );
 
-        $role = Role::create(['name' => 'superadmin']);
-        $permission = Permission::create(['name' => 'view']);
+        $role = Role::create(['name' => 'superadmin', 'guard_name' => 'api']);
+        $permission = Permission::create(['name' => 'view', 'guard_name' => 'api']);
 
         $role->givePermissionTo($permission);
         $permission->assignRole($role);
