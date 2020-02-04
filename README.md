@@ -76,3 +76,17 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Steps to Install our Project
+
+Step 1 :  git clone https://github.com/apurvfortius/laravel_vue.git
+Step 2 : composer install
+Step 3 : npm install
+Step 4 : Copy env.example file and make .env with your database name
+Step 5 : php artisan migrate
+Step 6 : php artisan passport:install
+Step 7 : php artisan vendor:publish --tag=passport-components
+Step 8 : php artisan passport:keys
+Step 9 : Add this two variable in your .env file add give oauth details
+            CLIENT_ID= {your_client_id}
+            CLIENT_SECRET={your_client_secret}
