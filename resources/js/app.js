@@ -21,6 +21,8 @@ import VueProgressBar from 'vue-progressbar';
 
 import {routes} from './routes';
 
+import { store } from './store/store';
+
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
@@ -83,13 +85,16 @@ const toast = swal.mixin({
     }
 });
 window.toast = toast;
-
+import App from './App.vue'
 const app = new Vue({
     el: '#app',
     router,
+    store: store,
     data: {
         search: ''
     },
+    components: { App },
+    template: '<App/>',
     methods:{
         searchit: _.debounce(() => {
             Fire.$emit('searching');

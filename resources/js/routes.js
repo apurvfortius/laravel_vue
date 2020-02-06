@@ -1,6 +1,7 @@
 export const routes = [
-    //auth routes
+    { path: '/', components: require('./components/Index') },
     { path: '/login', components: require('./components/auth/Login.vue') },
+    { path: '/register', components: require('./components/auth/Register.vue') },
 
     { path: '/dashboard', components: require('./components/Dashboard.vue'), meta:{ requireAuth : true } },
     { path: '/profile', components: require('./components/Profile.vue'), meta:{ requireAuth : true } },

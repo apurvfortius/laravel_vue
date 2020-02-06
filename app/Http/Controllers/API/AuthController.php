@@ -12,8 +12,11 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        //$http = new \GuzzleHttp\Client;
-
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        
         $email = $request->email;
         $password = $request->password;
         $request->request->add([
