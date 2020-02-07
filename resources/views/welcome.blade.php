@@ -9,6 +9,12 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link rel="stylesheet" href="/css/app.css">
+
+        <style>
+            .nav-link{
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body class="layout-top-nav" data-gr-c-s-loaded="true" style="height: auto;">
         <div id="app" class="wrapper">

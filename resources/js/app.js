@@ -86,6 +86,33 @@ const toast = swal.mixin({
 });
 window.toast = toast;
 import App from './App.vue'
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requireAuth)) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      if (!store.getters.loggedIn) {
+        next({
+          path: '/login',
+        })
+      } else {
+        next()
+      }
+    } else if (to.matched.some(record => record.meta.requireVisitor)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (store.getters.loggedIn) {
+          next({
+            path: '/dashboard',
+          })
+        } else {
+          next()
+        }
+      } else {
+      next() // make sure to always call next()!
+    }
+})
+
 const app = new Vue({
     el: '#app',
     router,

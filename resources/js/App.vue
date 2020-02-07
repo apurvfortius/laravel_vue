@@ -1,8 +1,9 @@
 <template>
   <div id="app" class="wrapper">
-    <Navbar/>
+    <Navbar v-if="!loggedIn"></Navbar>
+    <Admin v-if="loggedIn"></Admin>
 
-    <Sidebar/>
+    <Sidebar v-if="loggedIn"></Sidebar>
     
       <router-view></router-view>
     
@@ -12,6 +13,7 @@
 
 <script>
 import Navbar from './components/layouts/Navbar'
+import Admin from './components/layouts/AdminHeader'
 import Sidebar from './components/layouts/Sidebar'
 import Footer from './components/layouts/Footer'
 export default {
@@ -22,9 +24,15 @@ export default {
     }
   },
   components: {
+    Admin,
     Navbar,
     Sidebar,
     Footer,
-  }
+  },
+  computed: {
+        loggedIn() {
+            return this.$store.getters.loggedIn
+        }
+    }
 }
 </script>

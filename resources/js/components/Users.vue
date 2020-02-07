@@ -67,7 +67,7 @@
                     
                     <form @submit.prevent="editMode ? updateUser() : createUser()">
                         <div class="modal-body">
-                            <div class="form-group">
+                            <div class="form-group"> 
                                 <input v-model="form.name" type="text" name="name" id="name" class="form-control" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
                                 <has-error :form="form" field="name"></has-error>
                             </div>
